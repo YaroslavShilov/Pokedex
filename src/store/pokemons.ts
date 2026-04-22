@@ -16,7 +16,7 @@ type Pokemon = {
 };
 
 type PokemonsState = {
-  list: Pokemon[];
+  pokemons: Pokemon[];
   isLoading: boolean;
   error: string | null;
 };
@@ -29,7 +29,7 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
   set,
   getState,
 ) => ({
-  list: [],
+  pokemons: [],
   isLoading: false,
   error: null,
   fetchPokemons: async ({ takeCount, ...params }) => {
@@ -44,7 +44,7 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
       const json: { results: { name: string; url: string }[] } =
         await resp.json();
 
-      const list = json.results.map(({ name, url }) => {
+      const pokemons = json.results.map(({ name, url }) => {
         const id = url.split("/").at(-2)!;
         return {
           id,
@@ -54,7 +54,10 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
         };
       });
 
-      set({ list: [...getState().list, ...list], isLoading: false });
+      set({
+        pokemons: [...getState().pokemons, ...pokemons],
+        isLoading: false,
+      });
     } catch (err) {
       console.error(err);
       set({ error: "fetchPokemons: something went wrong" });

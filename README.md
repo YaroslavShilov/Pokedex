@@ -1,1 +1,5 @@
-# React + TypeScript + Zustand + Vite
+React
+TypeScript
+Zustand
+Vite
+Lucide (icons)
