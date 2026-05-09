@@ -19,6 +19,7 @@ type PokemonsState = {
   pokemons: Pokemon[];
   isLoading: boolean;
   error: string | null;
+  morePossible: boolean;
 };
 
 type PokemonsActions = {
@@ -32,6 +33,7 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
   pokemons: [],
   isLoading: false,
   error: null,
+  morePossible: false,
   fetchPokemons: async ({ takeCount, ...params }) => {
     try {
       set({ isLoading: true });
@@ -56,6 +58,7 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
 
       set({
         pokemons: [...getState().pokemons, ...pokemons],
+        morePossible: pokemons.length === takeCount,
         isLoading: false,
       });
     } catch (err) {

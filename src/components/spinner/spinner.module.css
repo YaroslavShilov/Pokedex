@@ -21,12 +21,13 @@
 .spinner:after {
   content: "";
   position: absolute;
+  top: -4px;
+  left: 0;
 
   width: 100%;
   height: calc(50% + 6px);
   background-color: var(--primary);
   border-bottom: 4px solid var(--secondary);
-  top: -4px;
 }
 
 /*circle in the middle*/

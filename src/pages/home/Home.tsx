@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   type FetchPokemonsParams,
   usePokemonsStore,
 } from "../../store/pokemons.ts";
-import { Container } from "../../components/container/Container.tsx";
 import { Spinner } from "../../components/spinner/Spinner.tsx";
-import styles from "./home.module.css";
 import { Button } from "../../components/button/Button.tsx";
+import styles from "./home.module.css";
 
 export const Home = () => {
   const [query, setQuery] = useState<FetchPokemonsParams>({
@@ -14,7 +13,8 @@ export const Home = () => {
     offset: 0,
   });
 
-  const { isLoading, pokemons, fetchPokemons } = usePokemonsStore();
+  const { isLoading, pokemons, morePossible, fetchPokemons } =
+    usePokemonsStore();
 
   useEffect(() => {
     fetchPokemons(query);
@@ -27,7 +27,7 @@ export const Home = () => {
   };
 
   return (
-    <Container>
+    <Fragment>
       <div className={styles.list}>
         {pokemons.map(({ name, id, image }) => (
           <div className={styles.card} key={id}>
@@ -39,12 +39,12 @@ export const Home = () => {
           </div>
         ))}
       </div>
-      {!isLoading && (
-        <div className={styles.btn}>
+      <div className={styles.btn}>
+        {isLoading && <Spinner center />}
+        {!isLoading && morePossible && (
           <Button onClick={loadMore}>Show more</Button>
-        </div>
-      )}
-      {isLoading && <Spinner space={"40px auto"} />}
-    </Container>
+        )}
+      </div>
+    </Fragment>
   );
 };
