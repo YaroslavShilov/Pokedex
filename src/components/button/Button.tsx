@@ -2,11 +2,8 @@ import * as React from "react";
 import styles from "./button.module.css";
 import { clsx } from "clsx";
 
-type Button = {
+type Button = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: "l" | "m";
-  onClick: () => void;
-  children: React.ReactNode;
-  disabled?: boolean;
 };
 
 export const Button = ({ onClick, disabled, size = "l", children }: Button) => (

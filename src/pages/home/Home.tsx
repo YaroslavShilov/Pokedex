@@ -1,14 +1,12 @@
-import { Fragment, useEffect, useState } from "react";
-import {
-  type FetchPokemonsParams,
-  usePokemonsStore,
-} from "../../store/pokemons.ts";
+import { useEffect, useState } from "react";
+import { usePokemonsStore } from "../../store/pokemons.ts";
 import { Spinner } from "../../components/spinner/Spinner.tsx";
 import { Button } from "../../components/button/Button.tsx";
+import { PageTemplate } from "../pageTemplate/PageTemplate.tsx";
 import styles from "./home.module.css";
 
 export const Home = () => {
-  const [query, setQuery] = useState<FetchPokemonsParams>({
+  const [query, setQuery] = useState({
     takeCount: 50,
     offset: 0,
   });
@@ -27,7 +25,7 @@ export const Home = () => {
   };
 
   return (
-    <Fragment>
+    <PageTemplate>
       <div className={styles.list}>
         {pokemons.map(({ name, id, image }) => (
           <div className={styles.card} key={id}>
@@ -45,6 +43,6 @@ export const Home = () => {
           <Button onClick={loadMore}>Show more</Button>
         )}
       </div>
-    </Fragment>
+    </PageTemplate>
   );
 };

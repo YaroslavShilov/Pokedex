@@ -3,7 +3,7 @@ import { devtools } from "zustand/middleware";
 import { buildURL } from "../tools/tools.ts";
 import { BASE_URL, getImgUrl } from "./api.ts";
 
-export type FetchPokemonsParams = {
+type FetchPokemonsParams = {
   takeCount: number;
   offset: number;
 };
@@ -12,7 +12,6 @@ type Pokemon = {
   id: number | string;
   name: string;
   image: string;
-  url: string;
 };
 
 type PokemonsState = {
@@ -42,17 +41,16 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
         ...params,
         limit: takeCount,
       });
-      const resp = await fetch(url);
-      const json: { results: { name: string; url: string }[] } =
-        await resp.json();
+      const pokemonsData = await fetch(url)
+        .then((r) => r.json())
+        .then((r) => r.results as { name: string; url: string }[]);
 
-      const pokemons = json.results.map(({ name, url }) => {
+      const pokemons = pokemonsData.map(({ name, url }) => {
         const id = url.split("/").at(-2)!;
         return {
           id,
           name,
           image: getImgUrl(id),
-          url,
         };
       });
 
@@ -63,7 +61,7 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
       });
     } catch (err) {
       console.error(err);
-      set({ error: "fetchPokemons: something went wrong" });
+      set({ error: "fetchPokemons: something went wrong", isLoading: false });
     }
   },
 });
