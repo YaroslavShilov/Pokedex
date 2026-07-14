@@ -33,12 +33,12 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
   isLoading: false,
   error: null,
   morePossible: false,
-  fetchPokemons: async ({ takeCount, ...params }) => {
+  fetchPokemons: async ({ takeCount, offset }) => {
     try {
       set({ isLoading: true });
 
       const url = buildURL(BASE_URL + "/pokemon", {
-        ...params,
+        offset,
         limit: takeCount,
       });
       const pokemonsData = await fetch(url)
@@ -55,7 +55,8 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
       });
 
       set({
-        pokemons: [...getState().pokemons, ...pokemons],
+        pokemons:
+          offset === 0 ? pokemons : [...getState().pokemons, ...pokemons],
         morePossible: pokemons.length === takeCount,
         isLoading: false,
       });

@@ -94,8 +94,7 @@ const pokemonSlice: StateCreator<PokemonActions & PokemonState> = (set) => ({
         pokemon,
         isLoading: false,
       });
-    } catch (err) {
-      console.error(err);
+    } catch {
       set({ error: "fetchPokemon: something went wrong", isLoading: false });
     }
   },

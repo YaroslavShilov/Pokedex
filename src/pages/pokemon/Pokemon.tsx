@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { PageTemplate } from "../pageTemplate/PageTemplate.tsx";
 import { usePokemonsStore } from "../../store/pokemons.ts";
 import { Fragment, useEffect, useState } from "react";
 import { usePokemonStore } from "../../store/pokemon.ts";
@@ -36,12 +35,10 @@ export const Pokemon = () => {
    */
 
   return (
-    <PageTemplate>
-      {isLoading || !pokemon ? (
-        <Spinner center />
-      ) : (
-        <Fragment>Pokemon</Fragment>
-      )}
-    </PageTemplate>
+    <Fragment>
+      {isLoading && <Spinner center />}
+      {!isLoading && !pokemon && <Fragment>Not found</Fragment>}
+      {!isLoading && pokemon && <Fragment>Pokemon</Fragment>}
+    </Fragment>
   );
 };

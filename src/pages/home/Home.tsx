@@ -1,22 +1,21 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { usePokemonsStore } from "../../store/pokemons.ts";
 import { Spinner } from "../../components/spinner/Spinner.tsx";
 import { Button } from "../../components/button/Button.tsx";
-import { PageTemplate } from "../pageTemplate/PageTemplate.tsx";
+import { Link } from "react-router-dom";
 import styles from "./home.module.css";
 
+const initialQuery = { takeCount: 24, offset: 0 };
+
 export const Home = () => {
-  const [query, setQuery] = useState({
-    takeCount: 50,
-    offset: 0,
-  });
+  const [query, setQuery] = useState(initialQuery);
 
   const { isLoading, pokemons, morePossible, fetchPokemons } =
     usePokemonsStore();
 
   useEffect(() => {
-    fetchPokemons(query);
-  }, []);
+    fetchPokemons(initialQuery);
+  }, [fetchPokemons]);
 
   const loadMore = () => {
     const newQuery = { ...query, offset: query.offset + query.takeCount };
@@ -25,16 +24,16 @@ export const Home = () => {
   };
 
   return (
-    <PageTemplate>
+    <Fragment>
       <div className={styles.list}>
         {pokemons.map(({ name, id, image }) => (
-          <div className={styles.card} key={id}>
-            <p className={styles.card__name}>{name}</p>
-            <p className={styles.card__id}>#{id}</p>
-            <div className={styles.card__img}>
+          <Link className={styles.card} to={`/pokemon/${id}`} key={id}>
+            <span className={styles.card__name}>{name}</span>
+            <span className={styles.card__id}>#{id}</span>
+            <span className={styles.card__img}>
               <img src={image} alt={name} />
-            </div>
-          </div>
+            </span>
+          </Link>
         ))}
       </div>
       <div className={styles.btn}>
@@ -43,6 +42,6 @@ export const Home = () => {
           <Button onClick={loadMore}>Show more</Button>
         )}
       </div>
-    </PageTemplate>
+    </Fragment>
   );
 };

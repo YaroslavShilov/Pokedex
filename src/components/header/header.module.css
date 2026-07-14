@@ -1,4 +1,35 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .search {
-  max-width: 400px;
-  margin: 0 auto;
+  flex: 0 1 400px;
+}
+
+.link {
+  flex: 0 0 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+
+  border-radius: 8px;
+  border: 2px solid var(--muted);
+
+  color: var(--muted);
+
+  transition: all 0.2s ease-in-out;
+
+  svg {
+    color: inherit;
+  }
+
+  &:hover {
+    color: white;
+    border-color: var(--secondary);
+    background-color: var(--primary);
+  }
 }
