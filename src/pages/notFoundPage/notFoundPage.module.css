@@ -1,22 +1,15 @@
-.title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
+.root {
+  text-align: center;
 
-.title > span {
-  font: 400 160px/1 var(--font-title);
-  font-style: italic;
-  color: var(--secondary);
-}
-
-.image {
-  display: flex;
-  justify-content: center;
-  margin-top: -30px;
+  h2 {
+    font: 400 160px/1 var(--font-title);
+    font-style: italic;
+    color: var(--secondary);
+    letter-spacing: 20px;
+  }
 
   svg {
     width: 300px;
+    margin-top: -30px;
   }
 }

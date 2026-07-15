@@ -1,0 +1,18 @@
+.root {
+  text-align: center;
+}
+
+.notFound {
+  h2 {
+    font: 400 28px/1 var(--font-title);
+  }
+
+  p {
+    margin: 20px 0 0;
+    font: 400 60px/1 var(--font-title);
+  }
+
+  svg {
+    width: 300px;
+  }
+}

@@ -33,6 +33,10 @@ type Pokemon = {
   habitat: string;
   about: string;
   category: string;
+  type: {
+    primary: string;
+    secondary?: string;
+  };
   evolves_to: {
     evolves_to: Pokemon["evolves_to"];
     image: string;
@@ -59,15 +63,36 @@ const pokemonSlice: StateCreator<PokemonActions & PokemonState> = (set) => ({
     try {
       set({ isLoading: true });
 
+      type PokemonData = Pick<Pokemon, "id" | "name" | "height" | "weight"> & {
+        types: { slot: number; type: { name: string } }[];
+        species: {
+          url: string;
+        };
+        stats: { stat: { name: string }; base_stat: number; effort: number }[];
+      };
+
       const url = `${BASE_URL}/pokemon/${name}`;
-      const pokemonData = await fetch(url).then((r) => r.json());
-      const speciesData = await fetch(pokemonData.species.url).then((r) =>
-        r.json(),
-      );
+      const pokemonData: PokemonData = await fetch(url).then((r) => r.json());
+      const speciesData: Record<string, any> = await fetch(
+        pokemonData.species.url,
+      ).then((r) => r.json());
 
       const evolutionChain = await fetch(speciesData.evolution_chain.url)
         .then((r) => r.json())
         .then((r) => r.chain.evolves_to);
+
+      const type = pokemonData.types.reduce<Pokemon["type"]>(
+        (acc, cur) => {
+          if (cur.slot == 1) {
+            acc.primary = cur.type.name;
+          } else if (cur.slot == 2) {
+            acc.secondary = cur.type.name;
+          }
+
+          return acc;
+        },
+        { primary: "", secondary: undefined },
+      );
 
       const pokemon: Pokemon = {
         id: pokemonData.id,
@@ -75,11 +100,12 @@ const pokemonSlice: StateCreator<PokemonActions & PokemonState> = (set) => ({
         image: getImgUrl(pokemonData.id),
         height: pokemonData.height / 10,
         weight: pokemonData.weight / 10,
-        stats: pokemonData.stats.map((obj: any) => ({
+        stats: pokemonData.stats.map((obj) => ({
           name: obj.stat.name,
           value: obj.base_stat,
           effort: obj.effort,
         })),
+        type,
         habitat: speciesData.habitat,
         about: speciesData.flavor_text_entries
           .find((entry: any) => entry.language.name === "en")
@@ -95,7 +121,11 @@ const pokemonSlice: StateCreator<PokemonActions & PokemonState> = (set) => ({
         isLoading: false,
       });
     } catch {
-      set({ error: "fetchPokemon: something went wrong", isLoading: false });
+      set({
+        error: "fetchPokemon: something went wrong",
+        pokemon: null,
+        isLoading: false,
+      });
     }
   },
 });

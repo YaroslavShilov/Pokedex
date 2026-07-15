@@ -1,24 +1,24 @@
 import { Search } from "../search/Search.tsx";
-import styles from "./header.module.css";
 import { HeartIcon, HomeIcon } from "lucide-react";
-import { Link } from "react-router-dom";
 import { Container } from "../container/Container.tsx";
+import { ActionButton } from "../actionButton/ActionButton.tsx";
+import styles from "./header.module.css";
 
 export const Header = () => {
   return (
     <Container>
       <div className={styles.header}>
-        <Link className={styles.link} to={"/"}>
+        <ActionButton type="link" to={"/"}>
           <HomeIcon />
-        </Link>
+        </ActionButton>
 
         <div className={styles.search}>
           <Search />
         </div>
 
-        <Link className={styles.link} to={"/favorite"}>
+        <ActionButton type="link" to={"/favorite"}>
           <HeartIcon />
-        </Link>
+        </ActionButton>
       </div>
     </Container>
   );

@@ -1,8 +1,13 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePokemonsStore } from "../../store/pokemons.ts";
 import { Fragment, useEffect, useState } from "react";
 import { usePokemonStore } from "../../store/pokemon.ts";
 import { Spinner } from "../../components/spinner/Spinner.tsx";
+import { NotFoundPage } from "../notFoundPage/NotFoundPage.tsx";
+import styles from "./pokemon.module.css";
+import { PsyDuckIcon } from "../../components/PsyDuckIcon.tsx";
+import { ActionButton } from "../../components/actionButton/ActionButton.tsx";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 export const Pokemon = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,13 +37,28 @@ export const Pokemon = () => {
     name: string;
     id: number | string;
   }[];
+  type: {
+    primary: string;
+    secondary?: string;
+  };
    */
 
   return (
-    <Fragment>
+    <div className={styles.root}>
       {isLoading && <Spinner center />}
-      {!isLoading && !pokemon && <Fragment>Not found</Fragment>}
-      {!isLoading && pokemon && <Fragment>Pokemon</Fragment>}
-    </Fragment>
+      {!isLoading && !pokemon && (
+        <div className={styles.notFound}>
+          <h2>Pokemon: {id}</h2>
+          <p>Not Found</p>
+          <PsyDuckIcon />
+        </div>
+      )}
+      {!isLoading && pokemon && (
+        <Fragment>
+          <h2 className={styles.name}>{pokemon.name}</h2>
+          <p className={styles.id}>#{pokemon.id}</p>
+        </Fragment>
+      )}
+    </div>
   );
 };
