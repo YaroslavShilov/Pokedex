@@ -1,7 +1,6 @@
 .btn {
   display: inline-block;
   border: 3px solid var(--secondary);
-  border-radius: 4px;
   box-shadow: 3px 3px 0 var(--secondary);
 
   font: 400 18px/1 var(--font-title);
@@ -33,9 +32,17 @@
 
 .btn_l {
   padding: 20px;
+  border-radius: 4px;
 }
 
 .btn_m {
   padding: 10px 20px;
   font-size: 16px;
+  border-radius: 6px;
+}
+
+.btn_s {
+  padding: 8px 10px;
+  font-size: 14px;
+  border-radius: 8px;
 }

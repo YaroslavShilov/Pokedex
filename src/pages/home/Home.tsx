@@ -39,7 +39,9 @@ export const Home = () => {
       <div className={styles.btn}>
         {isLoading && <Spinner center />}
         {!isLoading && morePossible && (
-          <Button onClick={loadMore}>Show more</Button>
+          <Button elType={"button"} onClick={loadMore}>
+            Show more
+          </Button>
         )}
       </div>
     </Fragment>

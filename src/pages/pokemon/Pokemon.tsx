@@ -6,7 +6,6 @@ import { Spinner } from "../../components/spinner/Spinner.tsx";
 import { NotFoundPage } from "../notFoundPage/NotFoundPage.tsx";
 import styles from "./pokemon.module.css";
 import { PsyDuckIcon } from "../../components/PsyDuckIcon.tsx";
-import { ActionButton } from "../../components/actionButton/ActionButton.tsx";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 export const Pokemon = () => {
@@ -22,25 +21,25 @@ export const Pokemon = () => {
 
   console.log("pokemon: ", pokemon);
   /*
-    id: number | string;
-  name: string;
-  image: string;
-  weight: number; // kg
-  height: number; // m
-  stats: { name: string; value: number; effort: number }[];
-  habitat: string;
-  about: string;
-  category: string;
+    // id: number | string;
+  // name: string;
+  // image: string;
+  // weight: number; // kg
+  // height: number; // m
+  // stats: { name: string; value: number; effort: number }[];
+  // habitat: string;
+  // about: string;
+  // category: string;
   evolves_to: {
     evolves_to: Pokemon["evolves_to"];
     image: string;
     name: string;
     id: number | string;
   }[];
-  type: {
-    primary: string;
-    secondary?: string;
-  };
+  // type: {
+  //   primary: string;
+  //   secondary?: string;
+  // };
    */
 
   return (
@@ -55,8 +54,65 @@ export const Pokemon = () => {
       )}
       {!isLoading && pokemon && (
         <Fragment>
-          <h2 className={styles.name}>{pokemon.name}</h2>
-          <p className={styles.id}>#{pokemon.id}</p>
+          <div className={styles.cont}>
+            <div>
+              <h2 className={styles.name}>{pokemon.name}</h2>
+              <p className={styles.id}>#{pokemon.id}</p>
+              <div className={styles.img}>
+                <img src={pokemon.image} alt={pokemon.name} />
+              </div>
+              <p className={styles.about}>{pokemon.about}</p>
+            </div>
+            <div>
+              <div className={styles.cols}>
+                <div className={styles.cols__head}>
+                  <p>
+                    <span>{pokemon.type.primary}</span>
+                    {pokemon.type.secondary && (
+                      <Fragment>
+                        {" / "}
+                        <span>{pokemon.type.secondary}</span>
+                      </Fragment>
+                    )}
+                  </p>
+                  <p>Type</p>
+                </div>
+                <div>
+                  <p>{pokemon.height}m</p>
+                  <p>Height</p>
+                </div>
+
+                <div>
+                  <p>{pokemon.weight}kg</p>
+                  <p>Weight</p>
+                </div>
+
+                <div>
+                  <p>{pokemon.habitat}</p>
+                  <p>Habitat</p>
+                </div>
+
+                <div>
+                  <p>{pokemon.category}</p>
+                  <p>Category</p>
+                </div>
+              </div>
+
+              <div className={styles.cols}>
+                <div className={styles.cols__head}>
+                  <p>Stats</p>
+                  <p />
+                </div>
+
+                {pokemon.stats.map(({ name, value }) => (
+                  <div key={name}>
+                    <p>{value}</p>
+                    <p>{name}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </Fragment>
       )}
     </div>

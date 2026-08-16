@@ -106,7 +106,7 @@ const pokemonSlice: StateCreator<PokemonActions & PokemonState> = (set) => ({
           effort: obj.effort,
         })),
         type,
-        habitat: speciesData.habitat,
+        habitat: speciesData.habitat?.name || "",
         about: speciesData.flavor_text_entries
           .find((entry: any) => entry.language.name === "en")
           ?.flavor_text.replace(/[\f\n]/g, " "),

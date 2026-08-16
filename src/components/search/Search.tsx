@@ -30,7 +30,12 @@ export const Search = () => {
         onChange={searchHandler}
       />
       <div className={styles.btn}>
-        <Button type={"submit"} size={"m"} disabled={!search.trim()}>
+        <Button
+          elType={"button"}
+          type={"submit"}
+          size={"m"}
+          disabled={!search.trim()}
+        >
           <SearchIcon />
         </Button>
       </div>
