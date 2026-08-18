@@ -9,23 +9,20 @@ type General = {
 
 type Link = General &
   LinkProps & {
-    elType: "link";
+    as: "link";
   };
 
 type Button = General &
   ComponentProps<"button"> & {
-    elType: "button";
+    as: "button";
   };
 
 export const Button = ({ size = "l", ...props }: Link | Button) => {
-  const className = clsx(styles.btn, {
-    [styles.btn_l]: size === "l",
-    [styles.btn_m]: size === "m",
-    [styles.btn_s]: size === "s",
-    [styles.btn_disabled]: props.elType === "button" && props.disabled,
+  const className = clsx(styles.btn, styles[`btn_${size}`], {
+    [styles.btn_disabled]: props.as === "button" && props.disabled,
   });
 
-  if (props.elType === "link") {
+  if (props.as === "link") {
     return <Link className={className} {...props} />;
   }
 

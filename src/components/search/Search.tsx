@@ -31,7 +31,7 @@ export const Search = () => {
       />
       <div className={styles.btn}>
         <Button
-          elType={"button"}
+          as={"button"}
           type={"submit"}
           size={"m"}
           disabled={!search.trim()}

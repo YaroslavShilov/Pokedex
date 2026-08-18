@@ -8,7 +8,7 @@ export const Header = () => {
   return (
     <Container>
       <div className={styles.header}>
-        <Button elType={"link"} to={"/"} size={"s"}>
+        <Button as={"link"} to={"/"} size={"s"}>
           <HomeIcon />
         </Button>
 
@@ -16,7 +16,7 @@ export const Header = () => {
           <Search />
         </div>
 
-        <Button elType={"link"} size={"s"} type="link" to={"/favorite"}>
+        <Button as={"link"} size={"s"} type="link" to={"/favorites"}>
           <HeartIcon />
         </Button>
       </div>

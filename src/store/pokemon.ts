@@ -23,7 +23,7 @@ const getEvolution = (evolves_to: EvolutionResponse): Pokemon["evolves_to"] => {
   });
 };
 
-type Pokemon = {
+export type Pokemon = {
   id: number | string;
   name: string;
   image: string;
@@ -79,7 +79,7 @@ const pokemonSlice: StateCreator<PokemonActions & PokemonState> = (set) => ({
 
       const evolutionChain = await fetch(speciesData.evolution_chain.url)
         .then((r) => r.json())
-        .then((r) => r.chain.evolves_to);
+        .then((r) => [r.chain]);
 
       const type = pokemonData.types.reduce<Pokemon["type"]>(
         (acc, cur) => {

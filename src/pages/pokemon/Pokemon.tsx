@@ -1,12 +1,12 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { usePokemonsStore } from "../../store/pokemons.ts";
 import { Fragment, useEffect, useState } from "react";
-import { usePokemonStore } from "../../store/pokemon.ts";
+import { type Pokemon, usePokemonStore } from "../../store/pokemon.ts";
 import { Spinner } from "../../components/spinner/Spinner.tsx";
 import { NotFoundPage } from "../notFoundPage/NotFoundPage.tsx";
 import styles from "./pokemon.module.css";
 import { PsyDuckIcon } from "../../components/PsyDuckIcon.tsx";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, MoveRightIcon } from "lucide-react";
 
 export const Pokemon = () => {
   const { id } = useParams<{ id: string }>();
@@ -113,8 +113,48 @@ export const Pokemon = () => {
               </div>
             </div>
           </div>
+
+          <div className={styles.evolutionWrapper}>
+            <h3 className={styles.evolutionWrapper__title}>Evolution</h3>
+            <div className={styles.evolutionWrapper__tree}>
+              {pokemon.evolves_to.length > 0 && (
+                <EvolutionTree evolute_to={pokemon.evolves_to} />
+              )}
+            </div>
+          </div>
         </Fragment>
       )}
     </div>
   );
 };
+
+const EvolutionTree = ({
+  evolute_to,
+}: {
+  evolute_to: Pokemon["evolves_to"];
+}) => (
+  <div className={styles.evolution}>
+    {evolute_to.map((evolute) => (
+      <div className={styles.evolution__section} key={evolute.id}>
+        <Link className={styles.evolution__card} to={`/pokemon/${evolute.id}`}>
+          <h4 className={styles.evolution__name}>
+            {evolute.name} <span>#{evolute.id}</span>
+          </h4>
+          <div className={styles.evolution__img}>
+            <img src={evolute.image} alt={evolute.name} />
+          </div>
+        </Link>
+        {evolute.evolves_to.length > 0 && (
+          <Fragment>
+            <div className={styles.evolution__arrow}>
+              <MoveRightIcon />
+            </div>
+            <div>
+              <EvolutionTree evolute_to={evolute.evolves_to} />
+            </div>
+          </Fragment>
+        )}
+      </div>
+    ))}
+  </div>
+);
