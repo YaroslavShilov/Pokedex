@@ -2,8 +2,8 @@ import { Fragment, useEffect, useState } from "react";
 import { usePokemonsStore } from "../../store/pokemons.ts";
 import { Spinner } from "../../components/spinner/Spinner.tsx";
 import { Button } from "../../components/button/Button.tsx";
-import styles from "./home.module.css";
 import { Card } from "../../components/card/Card.tsx";
+import styles from "./home.module.css";
 
 const initialQuery = { takeCount: 24, offset: 0 };
 

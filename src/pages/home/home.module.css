@@ -5,9 +5,20 @@
   gap: 40px;
 }
 
+.list > * {
+  flex-basis: 230px;
+  max-width: 274px;
+}
+
 .btn {
   margin-top: 40px;
   text-align: center;
+}
+
+@media (max-width: 1020px) {
+  .list > * {
+    flex-basis: 200px;
+  }
 }
 
 @media (max-width: 768px) {

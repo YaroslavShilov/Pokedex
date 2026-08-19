@@ -1,8 +1,42 @@
+.title {
+  margin-bottom: 40px;
+
+  font: 400 30px/1 var(--font-title);
+  text-align: center;
+  color: var(--secondary);
+}
+
+.notFound {
+  h2 {
+    font: 400 28px/1 var(--font-title);
+  }
+
+  p {
+    margin: 20px 0 0;
+    font: 400 60px/1 var(--font-title);
+  }
+
+  svg {
+    width: 300px;
+  }
+}
+
 .list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px;
+}
+
+.list > * {
+  flex-basis: 230px;
+  max-width: 274px;
+}
+
+@media (max-width: 1020px) {
+  .list > * {
+    flex-basis: 200px;
+  }
 }
 
 @media (max-width: 768px) {
