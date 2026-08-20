@@ -1,6 +1,7 @@
 import type { Pokemon } from "./pokemons.ts";
 import { create, type StateCreator } from "zustand";
 import { devtools } from "zustand/middleware";
+import { errorHandler, fakeFetch } from "../tools/tools.ts";
 
 type FavoritesState = {
   favorites: Record<string | number, Pokemon>;
@@ -11,7 +12,7 @@ type FavoritesState = {
 type FavoritesActions = {
   fetchFavorites: () => void;
   addFavorite: (pokemon: Pokemon) => void;
-  removeFavorite: (id: Pokemon) => void;
+  removeFavorite: (id: Pokemon["id"]) => void;
 };
 
 const favoritesSlice: StateCreator<FavoritesActions & FavoritesState> = (
@@ -26,16 +27,24 @@ const favoritesSlice: StateCreator<FavoritesActions & FavoritesState> = (
       set({ isLoading: true });
 
       // Fake fetch GET request, just for example
-      const res = await new Promise((res) => {
-        setTimeout(res, 100);
-      })
-        .then(() => {
-          return localStorage.getItem("favorites");
-        })
-        .then((res) => JSON.parse(res || "{}"));
+      const res = await fakeFetch<FavoritesState["favorites"]>(
+        "favorites",
+        "GET",
+      );
+
+      if (!res.ok) {
+        const error = await res.json();
+        console.error(res);
+        return set({
+          isLoading: false,
+          error: error,
+        });
+      }
+
+      const favorites = await res.json();
 
       set({
-        favorites: res,
+        favorites,
         isLoading: false,
       });
     } catch (err) {
@@ -48,41 +57,55 @@ const favoritesSlice: StateCreator<FavoritesActions & FavoritesState> = (
       set({ isLoading: true });
 
       // Fake fetch POST request, just for example
-      const res = await new Promise((res) => {
-        setTimeout(res, 100);
-      })
-        .then(() => {
-          return localStorage.getItem("favorites");
-        })
-        .then((res) => JSON.parse(res || "{}"));
+      const res = await fakeFetch<Pokemon>("favorites", "POST", pokemon);
+
+      if (!res.ok) {
+        const error = await res.json();
+        console.error(res);
+        return set({
+          isLoading: false,
+          error: error,
+        });
+      }
 
       set({
-        favorites: res,
+        favorites: { ...getState()["favorites"], [pokemon.id]: pokemon },
         isLoading: false,
       });
     } catch (err) {
       console.error(err);
-      set({ isLoading: false, error: "fetch favorites: something went wrong" });
+      set({ isLoading: false, error: "add favorite: something went wrong" });
     }
   },
-  removeFavorite: async () => {},
+  removeFavorite: async (id: Pokemon["id"]) => {
+    try {
+      set({ isLoading: true });
+
+      // Fake fetch DELETE request, just for example
+      const res = await fakeFetch("favorites", "DELETE", id);
+      if (!res.ok) {
+        const error = await res.json();
+        console.error(res);
+        return set({
+          isLoading: false,
+          error: error,
+        });
+      }
+
+      const favorites = { ...getState()["favorites"] };
+      delete favorites[id];
+
+      set({
+        favorites,
+        isLoading: false,
+      });
+    } catch (err) {
+      console.error(err);
+      set({ isLoading: false, error: "delete favorite: something went wrong" });
+    }
+  },
 });
 
 export const useFavoritesStore = create<FavoritesActions & FavoritesState>()(
   devtools(favoritesSlice),
 );
-
-const fakeFetch = (
-  url: string,
-  method: "GET" | "POST" | "PUT" | "DELETE",
-  body?: object,
-) => {
-  switch (method) {
-    case "GET": {
-      // Fake fetch behaviour for example
-      return new Promise((res) => setTimeout(res, 100)).then(() => ({
-        json: () => JSON.parse(localStorage.getItem(url) || "{}"),
-      }));
-    }
-  }
-};
