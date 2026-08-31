@@ -1,0 +1,41 @@
+.favorite {
+  padding: 3px;
+  margin: 0;
+
+  color: var(--primary);
+
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: transparent;
+    transition: all 0.3s ease-in-out;
+  }
+}
+
+.favorite_l,
+.favorite_m {
+  composes: favorite;
+}
+
+.favorite:hover svg {
+  fill: var(--muted);
+}
+
+.favorite_active:hover svg,
+.favorite_active svg {
+  fill: var(--primary);
+}
+
+.favorite_l {
+  width: 30px;
+  height: 30px;
+}
+
+.favorite_m {
+  width: 26px;
+  height: 26px;
+}

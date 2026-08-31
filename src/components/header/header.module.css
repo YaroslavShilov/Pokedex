@@ -2,6 +2,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  flex: 0 0 auto;
 }
 
 .search {

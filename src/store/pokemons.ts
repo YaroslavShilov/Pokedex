@@ -12,7 +12,6 @@ export type Pokemon = {
   id: number | string;
   name: string;
   image: string;
-  favorite: boolean;
 };
 
 type PokemonsState = {
@@ -46,12 +45,6 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
         .then((r) => r.json())
         .then((r) => r.results as { name: string; url: string }[]);
 
-      // BEGIN Don't have another option
-      const favorites: Record<string | number, Pokemon> = JSON.parse(
-        localStorage.getItem("favorites") ?? "{}",
-      );
-      // END
-
       const pokemons: Pokemon[] = pokemonsData.map(({ name, url }) => {
         const id = url.split("/").at(-2)!;
 
@@ -59,7 +52,6 @@ const pokemonsSlice: StateCreator<PokemonsActions & PokemonsState> = (
           id,
           name,
           image: getImgUrl(id),
-          favorite: !!favorites[id],
         };
       });
 

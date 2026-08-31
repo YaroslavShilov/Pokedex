@@ -1,9 +1,9 @@
 import type { Pokemon } from "./pokemons.ts";
 import { create, type StateCreator } from "zustand";
 import { devtools } from "zustand/middleware";
-import { errorHandler, fakeFetch } from "../tools/tools.ts";
+import { fakeFetch } from "../tools/tools.ts";
 
-type FavoritesState = {
+export type FavoritesState = {
   favorites: Record<string | number, Pokemon>;
   isLoading: boolean;
   error: string | null;
@@ -82,7 +82,7 @@ const favoritesSlice: StateCreator<FavoritesActions & FavoritesState> = (
       set({ isLoading: true });
 
       // Fake fetch DELETE request, just for example
-      const res = await fakeFetch("favorites", "DELETE", id);
+      const res = await fakeFetch("favorites", "DELETE", { id });
       if (!res.ok) {
         const error = await res.json();
         console.error(res);

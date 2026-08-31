@@ -1,36 +1,31 @@
-import { Fragment, useEffect, useState } from "react";
-import { usePokemonsStore } from "../../store/pokemons.ts";
-import { Spinner } from "../../components/spinner/Spinner.tsx";
-import { Button } from "../../components/button/Button.tsx";
-import { Link } from "react-router-dom";
-import styles from "./favorites.module.css";
+import { Fragment, useEffect } from "react";
+// import { Spinner } from "../../components/spinner/Spinner.tsx";
 import { Card } from "../../components/card/Card.tsx";
 import { Empty } from "../../components/empty/Empty.tsx";
-
-const initialQuery = { takeCount: 24, offset: 0 };
+import { useFavoritesStore } from "../../store/favorites.ts";
+import styles from "./favorites.module.css";
 
 export const Favorites = () => {
-  const [query, setQuery] = useState(initialQuery);
-
-  const { isLoading, pokemons, morePossible, fetchPokemons } =
-    usePokemonsStore();
+  const { isLoading, favorites, fetchFavorites } = useFavoritesStore();
 
   useEffect(() => {
-    fetchPokemons(initialQuery);
-  }, [fetchPokemons]);
+    fetchFavorites();
+  }, [fetchFavorites]);
+
+  const pokemons = Object.entries(favorites);
 
   return (
     <Fragment>
       <h2 className={styles.title}>Favorites</h2>
 
-      <Empty title={`Your favorite pokemons`} desc="Not Found" />
-
-      {isLoading ? (
-        <Spinner center />
-      ) : (
+      {/*{isLoading && <Spinner center />}*/}
+      {!isLoading && pokemons.length === 0 && (
+        <Empty title={`Your favorite pokemons`} desc="Not Found" />
+      )}
+      {pokemons.length > 0 && (
         <div className={styles.list}>
-          {pokemons.map((pokemon) => (
-            <Card key={pokemon.id} {...pokemon} />
+          {pokemons.map(([id, pokemon]) => (
+            <Card isFavorite={true} key={id} {...pokemon} />
           ))}
         </div>
       )}

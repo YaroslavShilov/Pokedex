@@ -1,4 +1,5 @@
 .card {
+  position: relative;
   flex: 1;
   display: block;
   padding: 20px;
@@ -8,8 +9,6 @@
   border-radius: 10px;
 
   transition: all 0.3s ease-in-out;
-
-  text-decoration: none;
 
   &:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
@@ -22,59 +21,79 @@
 }
 
 .card > * {
-  display: block;
+  text-decoration: none;
 }
 
-.card__name {
+.name {
+  display: inline-block;
   font: 400 28px/1 var(--font-title);
   color: var(--secondary);
 }
 
-.card_l .card__name {
+.card_l .name {
   font-size: 28px;
 }
 
-.card_m .card__name {
+.card_m .name {
   font-size: 24px;
 }
 
-.card__name::first-letter {
+.name::first-letter {
   text-transform: uppercase;
 }
 
-.card__id {
+.id {
   font: 400 16px/1.4 var(--font-text);
   color: var(--muted);
 }
 
-.card_l .card__id {
+.card_l .id {
   font-size: 16px;
 }
 
-.card_m .card__id {
+.card_m .id {
   font-size: 14px;
 }
 
-.card__img {
+.img {
+  display: block;
   margin: 10px auto 0;
   text-align: center;
 }
 
-.card_l .card__img {
+.card_l .img {
   max-width: 160px;
   height: 160px;
 }
 
-.card_m .card__img {
+.card_m .img {
   max-width: 100px;
   height: 100px;
 }
 
-.card__img img {
+.img img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   object-position: center;
+}
+
+.favorite {
+  position: absolute;
+  cursor: default;
+}
+
+.card_l .favorite {
+  right: 10px;
+  bottom: 5px;
+
+  padding: 2px;
+}
+
+.card_m .favorite {
+  right: 6px;
+  bottom: 2px;
+  padding: 3px;
 }
 
 @media (max-width: 1020px) {
@@ -82,7 +101,7 @@
     padding: 15px;
   }
 
-  .card_l .card__img {
+  .card_l .img {
     max-width: 120px;
     height: 120px;
   }

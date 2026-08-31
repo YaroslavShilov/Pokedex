@@ -8,6 +8,7 @@
 .field {
   flex: 1;
   display: block;
+  width: 100%;
   padding: 10px 20px;
 
   font: 400 18px/1 var(--font-title);

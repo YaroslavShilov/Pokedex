@@ -28,6 +28,7 @@
 }
 
 .img {
+  position: relative;
   max-width: 260px;
   height: 260px;
   margin: 20px auto;
@@ -39,6 +40,12 @@
   height: 100%;
   object-fit: contain;
   object-position: center;
+}
+
+.favorite {
+  position: absolute;
+  right: -24px;
+  bottom: 0;
 }
 
 .about {
@@ -104,7 +111,7 @@
   gap: 20px;
 }
 
-.evolution__section > a {
+.evolution__section > div:first-child {
   flex: 0 0 230px;
 }
 
@@ -132,7 +139,7 @@
     flex-direction: column;
   }
 
-  .evolution__section > a {
+  .evolution__section > div:first-child {
     flex-basis: auto;
     width: 230px;
   }

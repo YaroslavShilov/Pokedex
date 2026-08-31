@@ -8,18 +8,37 @@ import { Spinner } from "../../components/spinner/Spinner.tsx";
 import { MoveRightIcon } from "lucide-react";
 import { Card } from "../../components/card/Card.tsx";
 import { Empty } from "../../components/empty/Empty.tsx";
+import {
+  type FavoritesState,
+  useFavoritesStore,
+} from "../../store/favorites.ts";
+import { FavoriteButton } from "../../components/favoriteButton/FavoriteButton.tsx";
 import styles from "./pokemon.module.css";
 
 export const Pokemon = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { pokemon, isLoading, fetchPokemon } = usePokemonStore();
+  const {
+    pokemon,
+    isLoading: pokemonLoading,
+    fetchPokemon,
+  } = usePokemonStore();
+  const {
+    favorites,
+    isLoading: favoritesLoading,
+    fetchFavorites,
+    addFavorite,
+    removeFavorite,
+  } = useFavoritesStore();
 
   useEffect(() => {
     if (id) {
       fetchPokemon(id);
+      fetchFavorites();
     }
-  }, [id, fetchPokemon]);
+  }, [id, fetchPokemon, fetchFavorites]);
+
+  const isLoading = pokemonLoading;
 
   return (
     <div className={styles.root}>
@@ -35,6 +54,20 @@ export const Pokemon = () => {
               <p className={styles.id}>#{pokemon.id}</p>
               <div className={styles.img}>
                 <img src={pokemon.image} alt={pokemon.name} />
+                <div className={styles.favorite}>
+                  <FavoriteButton
+                    isFavorite={!!favorites[pokemon.id]}
+                    isLoading={favoritesLoading}
+                    removeFavorite={() => removeFavorite(pokemon.id)}
+                    addFavorite={() =>
+                      addFavorite({
+                        name: pokemon.name,
+                        id: pokemon.id,
+                        image: pokemon.image,
+                      })
+                    }
+                  />
+                </div>
               </div>
               <p className={styles.about}>{pokemon.about}</p>
             </div>
@@ -93,7 +126,10 @@ export const Pokemon = () => {
             <h3 className={styles.evolutionWrapper__title}>Evolution</h3>
             <div className={styles.evolutionWrapper__tree}>
               {pokemon.evolves_to.length > 0 && (
-                <EvolutionTree evolute_to={pokemon.evolves_to} />
+                <EvolutionTree
+                  favorites={favorites}
+                  evolute_to={pokemon.evolves_to}
+                />
               )}
             </div>
           </div>
@@ -105,7 +141,9 @@ export const Pokemon = () => {
 
 const EvolutionTree = ({
   evolute_to,
+  favorites,
 }: {
+  favorites: FavoritesState["favorites"];
   evolute_to: PokemonType["evolves_to"];
 }) => (
   <div className={styles.evolution}>
@@ -116,7 +154,7 @@ const EvolutionTree = ({
           id={evolute.id}
           name={evolute.name}
           image={evolute.image}
-          favorite={false}
+          isFavorite={!!favorites[evolute.id]}
         />
 
         {evolute.evolves_to.length > 0 && (
@@ -125,7 +163,10 @@ const EvolutionTree = ({
               <MoveRightIcon />
             </div>
             <div>
-              <EvolutionTree evolute_to={evolute.evolves_to} />
+              <EvolutionTree
+                favorites={favorites}
+                evolute_to={evolute.evolves_to}
+              />
             </div>
           </Fragment>
         )}
